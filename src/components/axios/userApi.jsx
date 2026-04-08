@@ -1,14 +1,17 @@
-import axios from 'axios'
-
+// src/axios/userApi.js
+import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:3000/api/students"
+  baseURL: "https://books-api-backed.vercel.app/api/students", 
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-})
+export const loginPost = async (data) => {
+  return api.post("/login", data);
+};
 
-export const loginPost = (data) => {
-    return api.post(`/login`,data)
-}
-export const registerPost = (data) => {
-    return api.post(`/register`, data)
-}
+export const registerPost = async (data) => {
+  return api.post("/register", data);
+};

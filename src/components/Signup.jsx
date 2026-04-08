@@ -1,44 +1,51 @@
+// src/components/Signup.jsx
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { registerPost } from "./axios/userApi"
+import { Link, useNavigate } from "react-router-dom";
+import { registerPost } from "./axios/userApi";
 import { useState } from "react";
 
 export default function Signup() {
-  const [Formdata, setFormdata] = useState({
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-  })
-  function handlechange(e) {
-    setFormdata({
-      ...Formdata,
-      [e.target.name]: e.target.value
-    })
+  });
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   }
 
-
-  async function handleregister(e) {
-    e.preventDefault()
-    try {
-      const res = await registerPost(Formdata)
-      if (res) {
-        // console.log(res.data)
-        console.log("created user  success");
-
-      } else {
-        console.log("invalid credintaials")
-      }
-
-    } catch (error) {
-      console.log(error, "error occure")
+  async function handleRegister(e) {
+    e.preventDefault();
+    console.log('handlereg call but nothing happend')
+    if (!formData.username.trim() || !formData.email.trim() || !formData.password.trim()) {
+      console.log("Please fill all fields");
+      return;
     }
 
+    try {
+      const res = await registerPost(formData);
 
+      if (res.status === 201) {
+        console.log("User created successfully");
+        navigate("/login"); // Redirect to login page
+      } else {
+        console.log(res.data.message || "Registration failed");
+      }
+    } catch (error) {
+      console.error("Error occurred:", error.response?.data || error.message);
+    }
   }
+
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white">
 
-      {/* Left Image Section */}
+      {/* Left Image */}
       <motion.div
         initial={{ opacity: 0, x: -80 }}
         animate={{ opacity: 1, x: 0 }}
@@ -52,7 +59,7 @@ export default function Signup() {
         />
       </motion.div>
 
-      {/* Right Form Section */}
+      {/* Right Form */}
       <motion.div
         initial={{ opacity: 0, x: 80 }}
         animate={{ opacity: 1, x: 0 }}
@@ -62,42 +69,47 @@ export default function Signup() {
         <div className="bg-gray-900 p-8 rounded-2xl w-[90%] max-w-md shadow-xl">
           <h2 className="text-3xl font-bold mb-6 text-center">Create Account</h2>
 
-          <form onSubmit={handleregister} className="space-y-4">
+          <form onSubmit={handleRegister} className="space-y-4">
             <input
               type="text"
-              placeholder="username"
+              placeholder="Username"
               name="username"
-              onChange={handlechange}
+              value={formData.username}
+              onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
 
             <input
               type="email"
-              placeholder="email"
-
+              placeholder="Email"
               name="email"
-
-              onChange={handlechange}
+              value={formData.email}
+              onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
 
             <input
               type="password"
-              placeholder="password"
+              placeholder="Password"
               name="password"
-              onChange={handlechange}
+              value={formData.password}
+              onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
 
-            <button className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-lg font-semibold transition">
-              <Link to={"/login"} >
-                Sign Up
-              </Link>
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-lg font-semibold transition"
+            >
+              Sign Up
             </button>
           </form>
 
           <p className="text-sm text-gray-400 text-center mt-4">
-            Already have an account? <span className="text-indigo-400 cursor-pointer"> <Link to={"/login"}>Login</Link> </span>
+            Already have an account?{" "}
+            <span className="text-indigo-400 cursor-pointer">
+              <Link to="/login">Login</Link>
+            </span>
           </p>
         </div>
       </motion.div>

@@ -15,9 +15,10 @@ const Home = () => {
     async function response() {
         try {
             const res = await getDta()
+
+            console.log(res)
             if (res.status === 200) {
                 setdata(res.data)
-                console.log(res.data)
             }
         } catch (error) {
             console.error("Delete failed:", error.response?.data || error.message)

@@ -22,9 +22,8 @@ const Nav = () => {
             {/* Menu */}
             <ul className="hidden md:flex gap-6 text-sm font-medium">
                 <li className="hover:text-orange-400 cursor-pointer"><Link to={"/"}> Home</Link></li>
-                <li className="hover:text-orange-400 cursor-pointer">Books</li>
-                <li className="hover:text-orange-400 cursor-pointer">Categories</li>
-                <li className="hover:text-orange-400 cursor-pointer">About</li>
+                <li className="hover:text-orange-400 cursor-pointer"><Link to={'/books'}>Books</Link></li>
+                <li className="hover:text-orange-400 cursor-pointer"><Link to={'/about'}>About</Link></li>
                 <li className="hover:text-orange-400 cursor-pointer"><Link to={'/admin'}>Admin</Link></li>
             </ul>
 

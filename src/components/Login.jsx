@@ -1,50 +1,49 @@
+// src/components/Login.jsx
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginPost } from "./axios/userApi";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const navigation = useNavigate()
-  const [Formdata, setFormdata] = useState({
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
     username: "",
     password: "",
-  })
-  function handlechange(e) {
-    setFormdata({
-      ...Formdata,
-      [e.target.name]: e.target.value
-    })
+  });
+
+  // Handle input change
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   }
 
+  // Handle login
   async function handleLogin(e) {
-    e.preventDefault()
-    try {
-      if (Formdata.username.trim() || Formdata.password.trim()) {
-        const res = await loginPost(Formdata)
-        console.log(Formdata)
-        if (res) {
-          // console.log(res.data)
-          console.log(res)
-          localStorage.setItem("token", res.data.Token);
-          localStorage.setItem("usename", res.data.username);
-          navigation('/')
-          console.log("Login success");
-        } else {
-          console.log("invalid credintaials")
-        }
-      }
-      else {
-        console.log("please fill the form first")
-      }
-
-
-    } catch (error) {
-      console.log(error, "error occure")
+    e.preventDefault();
+    if (!formData.username.trim() || !formData.password.trim()) {
+      console.log("Please fill the form first");
+      return;
     }
 
+    try {
+      const res = await loginPost(formData);
 
+      if (res.status === 200 && res.data.Token) {
+        localStorage.setItem("token", res.data.Token);
+        localStorage.setItem("username", res.data.username);
+        console.log("Login success");
+        navigate("/"); // Redirect to home
+      } else {
+        console.log(res.data.message || "Invalid credentials");
+      }
+    } catch (error) {
+
+      console.error("Error occurred:", error.response?.data || error);
+    }
   }
+
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white">
 
@@ -75,29 +74,35 @@ export default function Login() {
           <form onSubmit={handleLogin} className="space-y-4">
             <input
               type="text"
-              placeholder="username"
+              placeholder="Username"
               name="username"
-              onChange={handlechange}
+              value={formData.username}
+              onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
 
             <input
               type="password"
-              placeholder="password"
+              placeholder="Password"
               name="password"
-              onChange={handlechange}
+              value={formData.password}
+              onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
 
             <button
-              // disabled={!Formdata.username || !Formdata.password}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-lg font-semibold transition">
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-lg font-semibold transition"
+            >
               Login
             </button>
           </form>
 
           <p className="text-sm text-gray-400 text-center mt-4">
-            Don’t have an account? <span className="text-indigo-400 cursor-pointer"><Link to={"/signup"}>Signup</Link></span>
+            Don’t have an account?{" "}
+            <span className="text-indigo-400 cursor-pointer">
+              <Link to="/signup">Signup</Link>
+            </span>
           </p>
         </div>
       </motion.div>

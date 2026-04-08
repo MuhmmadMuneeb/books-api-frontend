@@ -2,16 +2,13 @@ import axios from 'axios'
 
 
 const api = axios.create({
-    baseURL: "http://localhost:3000/api/books"
+    baseURL: "books-api-backed.vercel.app/api/books"
 
 })
 const getAuthHeaders = () => {
-    const token = localStorage.getItem('token'); // Make sure you store it after login
-    return {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    };
+   const token = localStorage.getItem("token");
+  if (!token) return {};
+  return { headers: { Authorization: `Bearer ${token}` } };
 };
 
 export const getDta = () => {
