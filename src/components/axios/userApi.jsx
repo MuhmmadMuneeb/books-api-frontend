@@ -1,11 +1,11 @@
-// src/axios/userApi.js
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://books-api-backed.vercel.app/api/students", 
+  baseURL: "https://books-api-backed.vercel.app/students", 
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, // 👈 ADD THIS LINE
 });
 
 export const loginPost = async (data) => {

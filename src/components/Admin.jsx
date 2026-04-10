@@ -168,7 +168,7 @@ export default function AdminTheme() {
 
       {/* =============== BOOK CARDS =============== */}
       <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-        {data.map((book) => (
+        {Array.isArray(data) && data.map((book) => (
           <div
             key={book._id}
             className="bg-gray-900 p-6 rounded-2xl shadow-xl border border-gray-800 hover:scale-105 transition duration-300"
@@ -176,7 +176,7 @@ export default function AdminTheme() {
             {book.bookImg && (
               <div className="w-full h-48 mb-4 overflow-hidden rounded-xl">
                 <img
-                  src={`http://localhost:3000/uploads/${book.bookImg}`}
+                  src={`https://books-api-backed.vercel.app/uploads/${book.bookImg}`}
                   alt={book.bookTitle}
                   className="w-full h-full object-cover hover:scale-110 transition duration-500"
                 />
@@ -201,7 +201,7 @@ export default function AdminTheme() {
               </button>
             </div>
           </div>
-        ))}
+        )) }
       </div>
     </div>
   );

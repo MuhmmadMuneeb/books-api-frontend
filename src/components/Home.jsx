@@ -63,7 +63,7 @@ const Home = () => {
 
             {/* Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                {data.map((book) => (
+                {Array.isArray(data) && data.map((book) => (
                     <div
                         key={book._id}
                         /* Theme Change: Card background to slate-800 and border-slate-700 */

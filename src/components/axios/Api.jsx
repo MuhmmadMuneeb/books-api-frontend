@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 const api = axios.create({
-    baseURL: "books-api-backed.vercel.app/api/books"
+    baseURL: "https://books-api-backed.vercel.app/books"
 
 })
 const getAuthHeaders = () => {
@@ -18,7 +18,7 @@ export const Deletebook = (id) => {
     return api.delete(`/${id}`,getAuthHeaders())
 }
 export const AddBook = (bookData) => {
-    return api.post(`/`,bookData,getAuthHeaders())
+    return api.post(`/add`,bookData,getAuthHeaders())
 }
 export const EditBook = (id,bookData) => {
     return api.put(`/${id}`,bookData,getAuthHeaders())
